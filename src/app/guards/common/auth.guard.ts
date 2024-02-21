@@ -1,5 +1,5 @@
 import { Injectable, inject } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from "@angular/router";
+import { ActivatedRouteSnapshot, CanActivateChildFn, CanActivateFn, CanMatchFn, Route, Router, RouterStateSnapshot, UrlSegment } from "@angular/router";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { NgxSpinnerService } from "ngx-spinner";
 import { SpinnerType } from "src/app/base/base.component";
@@ -23,12 +23,23 @@ class PermissionsService {
         position: ToastrPosition.TopRight
       })
     }
-
     this.spinner.hide(SpinnerType.BallSpin);
+    return true;
+  }
+  canMatch(route: Route, segments: UrlSegment[]): boolean {
+    if (_isAuthenticated) {
+      this.router.navigate(["admin/"]);
+    }
     return true;
   }
 }
 
 export const AuthGuard: CanActivateFn = (next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
   return inject(PermissionsService).canActivate(next, state);
+}
+export const AuthGuardChield: CanActivateChildFn =  (childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
+  return inject(PermissionsService).canActivate(childRoute, state);
+}
+export const isMatch: CanMatchFn = (route: Route, segments: UrlSegment[]): boolean => {
+  return inject(PermissionsService).canMatch(route, segments);
 }

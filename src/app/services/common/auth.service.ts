@@ -8,8 +8,6 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class AuthService {
   private jwtHelper = inject(JwtHelperService);
     
-   
-
   identityCheck() {
     const token: string = localStorage.getItem("accessToken");
 
@@ -24,8 +22,11 @@ export class AuthService {
   }
 
   get isAuthenticated(): boolean {
+    console.log(_isAuthenticated)
     return _isAuthenticated;
   }
+
+
 }
 
 export let _isAuthenticated: boolean;

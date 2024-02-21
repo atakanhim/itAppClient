@@ -12,7 +12,7 @@ import { UserAuthService } from './models/user-auth.service';
 })
 export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
 
-  constructor(private toastrService: CustomToastrService, private userAuthService: UserAuthService, private router: Router, private spinner: NgxSpinnerService) { }
+  constructor(private toastrService: CustomToastrService, private userAuthService: UserAuthService, private router: Router) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -68,7 +68,7 @@ export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
           break;
       }
 
-      this.spinner.hide(SpinnerType.BallAtom);
+  
       return of(error);
     }));
   }
