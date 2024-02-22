@@ -16,7 +16,8 @@ export const routes: Routes = [
     path:"admin",
     component:LayoutComponent,
     children:[
-      {path:"",loadComponent:()=>import('./pages/insidepages/dashboard/dashboard.component').then(m=>m.DashboardComponent)}, 
+      {path:"",redirectTo:"dashboard",pathMatch:"full"}, 
+      {path:"dashboard",loadComponent:()=>import('./pages/insidepages/dashboard/dashboard.component').then(m=>m.DashboardComponent)}, 
       {path:"stok",loadComponent:()=>import('./pages/insidepages/stoks/stoks.component').then(m=>m.StoksComponent)},
 
     ],canActivate:[AuthGuard],canActivateChild:[AuthGuardChield]

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterModule } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { StoksComponent } from '../stoks/stoks.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
+import { AuthService } from 'src/app/services/common/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -11,5 +12,13 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
+  constructor(private router:Router, public authService:AuthService) {
 
+  }
+  logout(){
+    localStorage.removeItem('accessToken');
+    this.authService.identityCheck();
+    this.router.navigate(["admin"]);
+    this.router.navigate[""];
+  }
 }
