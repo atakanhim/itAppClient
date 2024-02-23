@@ -3,6 +3,7 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
 import { StoksComponent } from '../stoks/stoks.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { AuthService } from 'src/app/services/common/auth.service';
+import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/services/admin/custom-toastr.service';
 
 @Component({
   selector: 'app-layout',
@@ -12,13 +13,16 @@ import { AuthService } from 'src/app/services/common/auth.service';
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
-  constructor(private router:Router, public authService:AuthService) {
+  constructor(private router:Router, public authService:AuthService,private toastrService: CustomToastrService) {
 
   }
   logout(){
     localStorage.removeItem('accessToken');
+
     this.authService.identityCheck();
-    this.router.navigate(["admin"]);
-    this.router.navigate[""];
+    this.router.navigate([""]);
+
+    this.toastrService.message("Çıkış Başarılı","Basarili",{messageType:ToastrMessageType.Info,position:ToastrPosition.BottomRight})
+
   }
 }

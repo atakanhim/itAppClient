@@ -1,10 +1,11 @@
 import { Injectable, inject } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivateChildFn, CanActivateFn, CanMatchFn, Route, Router, RouterStateSnapshot, UrlSegment } from "@angular/router";
+import { ActivatedRouteSnapshot, CanActivateChildFn, CanActivateFn, CanDeactivateFn, CanMatchFn, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from "@angular/router";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { NgxSpinnerService } from "ngx-spinner";
 import { SpinnerType } from "src/app/base/base.component";
 import { _isAuthenticated } from "src/app/services/common/auth.service";
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from "src/app/services/admin/custom-toastr.service";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -43,3 +44,11 @@ export const AuthGuardChield: CanActivateChildFn =  (childRoute: ActivatedRouteS
 export const isMatch: CanMatchFn = (route: Route, segments: UrlSegment[]): boolean => {
   return inject(PermissionsService).canMatch(route, segments);
 }
+
+// export const canDeactivateGuard: CanDeactivateFn<CanComponentDeactivate> = (component: CanComponentDeactivate) => {
+//   return component.canDeactivate ? component.canDeactivate() : true;
+// };
+// export interface CanComponentDeactivate {
+//   canDeactivate: () => CanDeactivateType;
+// }
+// export type CanDeactivateType = Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree;

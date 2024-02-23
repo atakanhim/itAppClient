@@ -15,7 +15,7 @@ import { AuthService } from '../auth.service';
 })
 export class UserAuthService {
 
-  constructor(private httpClientService: HttpClientService,private authService:AuthService) { }
+  constructor(private httpClientService: HttpClientService, private authService: AuthService) { }
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
@@ -28,29 +28,29 @@ export class UserAuthService {
         `body was: ${error.error}`);
     }
     // Return an observable with a user-facing error message
-   
+
   }
 
-  async login(usernameOrEmail:string,password:string,callbackFunction?:()=>void):Promise<any>{
-    const loginUser = new Login_Users();
-    loginUser.Password=password;
-    loginUser.UsernameOrEmail=usernameOrEmail;
-    const observable: Observable<any | TokenResponse> =  this.httpClientService.post<any | TokenResponse>({controller:"auth",action:"login"},loginUser);
-    const tokenResponse:TokenResponse = await firstValueFrom(observable).catch(error=> {
-      console.log(error)
-     } ) as TokenResponse;
-     
-    if(tokenResponse)
-    {
-      localStorage.setItem("accessToken",tokenResponse.token.accessToken);
-      localStorage.setItem("refreshToken", tokenResponse.token.refreshToken);
-      this.authService.identityCheck();
-     }
-    else{
-      return tokenResponse;
-    }
+  async login(usernameOrEmail: string, password: string): Promise<any> {
 
-    callbackFunction && callbackFunction();
+    const loginUser = new Login_Users();
+    loginUser.Password = password;
+    loginUser.UsernameOrEmail = usernameOrEmail;
+    const observable: Observable<any | TokenResponse> = this.httpClientService.post<any | TokenResponse>({ controller: "auth", action: "login" }, loginUser);
+
+    try {
+      const tokenResponse = await firstValueFrom(observable);
+      if (tokenResponse) {
+        localStorage.setItem("accessToken", tokenResponse.token.accessToken);
+        localStorage.setItem("refreshToken", tokenResponse.token.refreshToken);
+        this.authService.identityCheck();
+        return true;
+      }
+    } catch (e){
+      console.log(e);
+      return false;
+    }
+    
 
   }
   async refreshTokenLogin(refreshToken: string, callBackFunction?: (state) => void): Promise<any> {
@@ -73,16 +73,15 @@ export class UserAuthService {
     }
   }
 
-  async googlelogin(user:SocialUser,callbackFunction?:()=>void):Promise<any>{
-    const observable:Observable<any> =this.httpClientService.post<SocialUser | TokenResponse>({
-      controller:"auth",
-      action:"google-login"
-    },user);
+  async googlelogin(user: SocialUser, callbackFunction?: () => void): Promise<any> {
+    const observable: Observable<any> = this.httpClientService.post<SocialUser | TokenResponse>({
+      controller: "auth",
+      action: "google-login"
+    }, user);
 
-    const tokenResponse = await firstValueFrom(observable).catch(err=>console.log(err)) as TokenResponse;
-    if(tokenResponse)
-    {
-      localStorage.setItem("accessToken",tokenResponse.token.accessToken);
+    const tokenResponse = await firstValueFrom(observable).catch(err => console.log(err)) as TokenResponse;
+    if (tokenResponse) {
+      localStorage.setItem("accessToken", tokenResponse.token.accessToken);
       localStorage.setItem("refreshToken", tokenResponse.token.refreshToken);
       // this.toastrService.message("google login basarili","Basarili",{messageType:ToastrMessageType.Success,position:ToastrPosition.TopRight})
     }

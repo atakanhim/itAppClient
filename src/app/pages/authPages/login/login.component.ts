@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { BaseComponent, SpinnerType } from 'src/app/base/base.component';
 import { User } from 'src/app/entities/user';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/services/admin/custom-toastr.service';
@@ -11,16 +11,16 @@ import { UserAuthService } from 'src/app/services/common/models/user-auth.servic
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule],
-  providers:[],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  providers: [],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent  extends BaseComponent{
+export class LoginComponent extends BaseComponent {
 
   loginForm: FormGroup;
 
-  constructor(private router:Router, private formBuilder: FormBuilder,  private userAuthService: UserAuthService,private toastrService: CustomToastrService) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private userAuthService: UserAuthService, private toastrService: CustomToastrService) {
     super();
   }
 
@@ -31,24 +31,21 @@ export class LoginComponent  extends BaseComponent{
     });
   }
 
- async  onSubmit() {
-    
+  async onSubmit() {
+
     if (this.loginForm.valid) {
-     let data =  await this.userAuthService.login(this.loginForm.value.username, this.loginForm.value.password,()=>{
+      let result = await this.userAuthService.login(this.loginForm.value.username, this.loginForm.value.password)
+      if (result) {
+        this.router.navigate(["admin"]);
+        this.toastrService.message("login basarili", "Basarili", { messageType: ToastrMessageType.Success, position: ToastrPosition.TopRight })
+      }
+      else
+        this.toastrService.message("login başarısız", "Başarısız", { messageType: ToastrMessageType.Error, position: ToastrPosition.TopRight })
 
-      this.router.navigate(["admin"]);
-      this.toastrService.message("login basarili","Basarili",{messageType:ToastrMessageType.Success,position:ToastrPosition.TopRight}) as any
-
-     }).catch((error) => {
-        console.log(error)
-      });
-      // TODO: Show spinner while logging in
-      
-      console.log('Form submitted!');
-      // Burada normalde sunucuya login isteği gönderebilirsiniz.
-    } else {
-      console.log('Form is invalid!');
     }
+    else
+      console.log('Form is invalid!');
+
   }
-  
+
 }
