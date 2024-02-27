@@ -16,13 +16,12 @@ import { List_User } from 'src/app/contracts/list_user';
 })
 export class UserAuthService {
 
-  constructor(private httpClientService: HttpClientService, private authService: AuthService) { }
+  constructor(private httpClientService: HttpClientService) { }
 
   private loggedInUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   loggedInUser$: Observable<List_User> = this.loggedInUserSubject.asObservable();
 
   async login(usernameOrEmail: string, password: string): Promise<any> {
-
     const loginUser = new Login_Users();
     loginUser.Password = password;
     loginUser.UsernameOrEmail = usernameOrEmail;
@@ -33,10 +32,7 @@ export class UserAuthService {
       if (tokenResponse) {
         localStorage.setItem("accessToken", tokenResponse.token.accessToken);
         localStorage.setItem("refreshToken", tokenResponse.token.refreshToken);
-        this.loggedInUserSubject.next(tokenResponse.user);
-        console.log(this.loggedInUserSubject.value);
-        console.log(tokenResponse.user);
-        this.authService.identityCheck();
+        this.pushLoggedUser(tokenResponse.user);
         return true;
       }
     } catch (e){
@@ -46,10 +42,8 @@ export class UserAuthService {
     
 
   }
-  removeLoggedUser(){
-    this.loggedInUserSubject.next(null);
-  }
- 
+
+  
   async refreshTokenLogin(refreshToken: string, callBackFunction?: (state) => void): Promise<any> {
     const observable: Observable<any | TokenResponse> = this.httpClientService.post({
       action: "refreshtokenlogin",
@@ -86,5 +80,11 @@ export class UserAuthService {
     callbackFunction()
 
   }
-
+  
+  removeLoggedUser(){
+    this.loggedInUserSubject.next(null);
+  }
+  pushLoggedUser(list_User:List_User){
+    this.loggedInUserSubject.next(list_User);
+  }
 }

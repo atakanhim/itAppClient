@@ -20,7 +20,7 @@ export class LoginComponent extends BaseComponent {
 
   loginForm: FormGroup;
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private userAuthService: UserAuthService, private toastrService: CustomToastrService) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private userAuthService: UserAuthService, private toastrService: CustomToastrService,private authService:AuthService) {
     super();
   }
 
@@ -32,10 +32,10 @@ export class LoginComponent extends BaseComponent {
   }
 
   async onSubmit() {
-
     if (this.loginForm.valid) {
       let result = await this.userAuthService.login(this.loginForm.value.username, this.loginForm.value.password)
       if (result) {
+        await this.authService.identityCheck();
         this.router.navigate(["admin"]);
         this.toastrService.message("login basarili", "Basarili", { messageType: ToastrMessageType.Success, position: ToastrPosition.TopRight })
       }

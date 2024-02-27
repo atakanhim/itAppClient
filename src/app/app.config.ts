@@ -12,6 +12,7 @@ import { HttpErrorHandlerInterceptorService } from './services/common/http-error
 export function tokenGetter() {
   return localStorage.getItem("access_token");
 }
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
@@ -22,8 +23,8 @@ export const appConfig: ApplicationConfig = {
       JwtModule.forRoot({
           config: {
               tokenGetter: tokenGetter,
-              allowedDomains: ["example.com"],
-              disallowedRoutes: ["http://example.com/examplebadroute/"],
+              allowedDomains: ["localhost:7067"],
+              disallowedRoutes: [""],
           },
       })
      ),

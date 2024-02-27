@@ -25,6 +25,14 @@ import { SocialLoginModule } from '@abacritt/angularx-social-login';
 
 export class AppComponent {
   constructor(public authService:AuthService) {
-    authService.identityCheck();
+    this.initialize();
+  }
+  private async initialize() {
+    await this.authService.identityCheck();
+  }
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    
   }
 }

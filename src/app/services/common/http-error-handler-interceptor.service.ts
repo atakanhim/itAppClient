@@ -18,6 +18,7 @@ export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
 
     return next.handle(req).pipe(catchError(error => {
       console.log("burdaim be burdaim")
+      console.log(error)
       switch (error.status) {
 
         case HttpStatusCode.Unauthorized:
@@ -39,25 +40,26 @@ export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
         case HttpStatusCode.InternalServerError:
           this.toastrService.message("Sunucuya erişilmiyor!", "Sunucu hatası!", {
             messageType: ToastrMessageType.Warning,
-            position: ToastrPosition.BottomFullWidht
+            position: ToastrPosition.BottomRight
           });
           break;
         case HttpStatusCode.BadRequest:
           this.toastrService.message("Geçersiz istek yapıldı!", "Geçersiz istek!", {
             messageType: ToastrMessageType.Warning,
-            position: ToastrPosition.BottomFullWidht
+            position: ToastrPosition.BottomRight
           });
           break;
         case HttpStatusCode.NotFound:
           this.toastrService.message("Sayfa bulunamadı!", "Sayfa bulunamadı!", {
             messageType: ToastrMessageType.Warning,
-            position: ToastrPosition.BottomFullWidht
+            position: ToastrPosition.BottomRight
           });
           break;
         default:
+          console.log("asda")
           this.toastrService.message("Beklenmeyen bir hata meydana gelmiştir!", "Hata!", {
             messageType: ToastrMessageType.Warning,
-            position: ToastrPosition.BottomFullWidht
+            position: ToastrPosition.BottomRight
           });
           break;
       }
