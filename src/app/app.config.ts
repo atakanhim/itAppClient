@@ -32,6 +32,6 @@ export const appConfig: ApplicationConfig = {
     PreloadAllModules,
     provideHttpClient(
         withInterceptorsFromDi()
-    ),
+    ), provideAnimationsAsync(),
   ]
 };

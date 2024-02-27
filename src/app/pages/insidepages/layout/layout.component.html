@@ -1,13 +1,47 @@
-<p>admin layout start</p>
-<button (click)="logout()">Logout</button>
+<mat-drawer-container class="example-container" autosize>
 
-<nav>
-    <ul>
+
+  <mat-drawer #drawer class="example-sidenav" mode="side">
+   <div class="sidebarCustom">
+    <ul class="menu">
+      <li><a routerLink="" > Dashboard </a></li>
+      <li><a routerLink="employees" > Personeller </a></li>
       <li><a routerLink="stok">Stok </a></li>
-      <li><a routerLink="" > dashboard </a></li>
+
+
     </ul>
-  </nav>
+   </div>
+  </mat-drawer>
+        <!-- // profile -->
+  <mat-drawer #drawer2 position="end" class="example-sidenav" mode="push">
+   <div class="sidebarCustom">
+    <ul class="menu">
+      <li><a routerLink="">Profile </a></li>
+    </ul>
+    <ul class="menu">
+      <li><a (click)="logout()"> L O G O U T</a></li>
+    </ul>
+   </div>
+  </mat-drawer>
 
-<router-outlet></router-outlet>
+  <div class="example-sidenav-content">
+    <mat-toolbar>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>IT</span>
+      <!-- // çizgi -->
+      <span class="example-spacer"></span> 
+      <!-- // çizgi -->
+      <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" (click)="drawer2.toggle()">
+        <mat-icon>person</mat-icon>
+      </button>
 
-<p>admin layout end</p>
+    </mat-toolbar>
+    <div class="routerClass">
+      <router-outlet></router-outlet>
+    </div>
+
+
+  </div>
+</mat-drawer-container>

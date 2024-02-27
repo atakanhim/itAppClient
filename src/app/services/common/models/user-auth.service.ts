@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClientService } from '../http-client.service';
 
-import { Observable, catchError, firstValueFrom, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, firstValueFrom, throwError } from 'rxjs';
 import { Login_Users } from 'src/app/contracts/users/login_user';
 
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from '../../admin/custom-toastr.service';
@@ -9,6 +9,7 @@ import { TokenResponse } from 'src/app/contracts/token/TokenResponse';
 import { SocialUser } from '@abacritt/angularx-social-login';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../auth.service';
+import { List_User } from 'src/app/contracts/list_user';
 
 @Injectable({
   providedIn: 'root'
@@ -17,19 +18,8 @@ export class UserAuthService {
 
   constructor(private httpClientService: HttpClientService, private authService: AuthService) { }
 
-  private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      // Client-side error
-      console.error('An error occurred:', error.error.message);
-    } else {
-      // Server-side error
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
-    }
-    // Return an observable with a user-facing error message
-
-  }
+  private loggedInUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  loggedInUser$: Observable<List_User> = this.loggedInUserSubject.asObservable();
 
   async login(usernameOrEmail: string, password: string): Promise<any> {
 
@@ -39,10 +29,13 @@ export class UserAuthService {
     const observable: Observable<any | TokenResponse> = this.httpClientService.post<any | TokenResponse>({ controller: "auth", action: "login" }, loginUser);
 
     try {
-      const tokenResponse = await firstValueFrom(observable);
+      const tokenResponse:TokenResponse = await firstValueFrom(observable);
       if (tokenResponse) {
         localStorage.setItem("accessToken", tokenResponse.token.accessToken);
         localStorage.setItem("refreshToken", tokenResponse.token.refreshToken);
+        this.loggedInUserSubject.next(tokenResponse.user);
+        console.log(this.loggedInUserSubject.value);
+        console.log(tokenResponse.user);
         this.authService.identityCheck();
         return true;
       }
@@ -53,6 +46,10 @@ export class UserAuthService {
     
 
   }
+  removeLoggedUser(){
+    this.loggedInUserSubject.next(null);
+  }
+ 
   async refreshTokenLogin(refreshToken: string, callBackFunction?: (state) => void): Promise<any> {
     const observable: Observable<any | TokenResponse> = this.httpClientService.post({
       action: "refreshtokenlogin",

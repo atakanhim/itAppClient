@@ -19,6 +19,7 @@ export const routes: Routes = [
       {path:"",redirectTo:"dashboard",pathMatch:"full"}, 
       {path:"dashboard",loadComponent:()=>import('./pages/insidepages/dashboard/dashboard.component').then(m=>m.DashboardComponent)}, 
       {path:"stok",loadComponent:()=>import('./pages/insidepages/stoks/stoks.component').then(m=>m.StoksComponent)},
+      {path:"employees",loadComponent:()=>import('./pages/insidepages/employees/employees.component').then(m=>m.EmployeesComponent)},
 
     ],canActivate:[AuthGuard],canActivateChild:[AuthGuardChield]
   },
