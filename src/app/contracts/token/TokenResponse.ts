@@ -1,4 +1,4 @@
-import { List_User } from "../list_user";
+import { List_User } from "../users/list_user";
 import { Token } from "./Token";
 
 export class TokenResponse{

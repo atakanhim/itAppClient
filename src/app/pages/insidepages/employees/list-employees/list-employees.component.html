@@ -1,0 +1,56 @@
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
+  
+      <!-- EmployeName Column -->
+      <ng-container matColumnDef="employeName">
+        <th mat-header-cell *matHeaderCellDef> İsim </th>
+        <td mat-cell *matCellDef="let element"> {{element.employeName}} </td>
+      </ng-container>
+  
+      <!-- EmployeSurname Column -->
+      <ng-container matColumnDef="employeSurname">
+        <th mat-header-cell *matHeaderCellDef> Soyisim </th>
+        <td mat-cell *matCellDef="let element"> {{element.employeSurname}} </td>
+      </ng-container>
+  
+      <!-- EmployeTelNO Column -->
+      <ng-container matColumnDef="employeTelNo">
+        <th mat-header-cell *matHeaderCellDef> Tel NO </th>
+        <td mat-cell *matCellDef="let element"> {{element.employeTelNo}} </td>
+      </ng-container>
+  
+      <!-- UsedLeaveDays Column -->
+      <ng-container matColumnDef="usedLeaveDays">
+        <th mat-header-cell *matHeaderCellDef> Kullanılan İzin Günü </th>
+        <td mat-cell *matCellDef="let element"> {{element.usedLeaveDays}} </td>
+      </ng-container>
+  
+      <!-- Department Column -->
+      <ng-container matColumnDef="department">
+        <th mat-header-cell *matHeaderCellDef> Departman </th>
+        <td mat-cell *matCellDef="let element"> {{element.department.name}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> * </th>
+
+        <td  mat-cell *matCellDef="let element" appDelete
+        (callback)="loadEmployees()"
+        [id]="element.id"
+        style="cursor: pointer;"
+        controller = "employee">
+  
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   showFirstLastButtons
+                   aria-label="Sayfalama sayısını seçiniz.">
+    </mat-paginator>
+  </div>
+  

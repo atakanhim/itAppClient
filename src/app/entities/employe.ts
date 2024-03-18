@@ -1,8 +1,8 @@
 export class Employe {
     id:string;
     appUserId:string;
+    departmentId:string;
     employeName: string;
     employeSurname: string;
-    createdDate:string;
-    updatedDate:string;
+    employeTelNO:string;
   }

@@ -33,15 +33,14 @@ export class LoginComponent extends BaseComponent {
 
   async onSubmit() {
     if (this.loginForm.valid) {
-      let result = await this.userAuthService.login(this.loginForm.value.username, this.loginForm.value.password)
+      let result = await this.userAuthService.login(this.loginForm.value.username, this.loginForm.value.password,(e)=>this.toastrService.message(e.Message, "Başarısız", { messageType: ToastrMessageType.Error, position: ToastrPosition.TopRight }))
       if (result) {
         await this.authService.identityCheck();
         this.router.navigate(["admin"]);
         this.toastrService.message("login basarili", "Basarili", { messageType: ToastrMessageType.Success, position: ToastrPosition.TopRight })
       }
-      else
-        this.toastrService.message("login başarısız", "Başarısız", { messageType: ToastrMessageType.Error, position: ToastrPosition.TopRight })
-
+    
+    
     }
     else
       console.log('Form is invalid!');

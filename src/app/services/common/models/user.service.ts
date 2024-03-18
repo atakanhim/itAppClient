@@ -5,7 +5,7 @@ import { Create_User_Request, Create_User_Response } from 'src/app/contracts/use
 import { Observable, firstValueFrom } from 'rxjs';
 
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from '../../admin/custom-toastr.service';
-import { List_User } from 'src/app/contracts/list_user';
+import { List_User } from 'src/app/contracts/users/list_user';
 
 
 @Injectable({

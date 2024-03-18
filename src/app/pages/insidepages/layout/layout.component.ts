@@ -9,7 +9,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { UserAuthService } from 'src/app/services/common/models/user-auth.service';
 
 @Component({
-  selector: 'app-layout',
+  selector: 'app-layout', 
   standalone: true,
   imports: [RouterModule,RouterLink,MatSidenavModule,MatToolbarModule, MatIconModule, MatButtonModule],
   templateUrl: './layout.component.html',
