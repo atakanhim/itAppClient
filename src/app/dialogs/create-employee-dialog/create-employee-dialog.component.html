@@ -5,36 +5,61 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
+
+  <div class="modal-body cbody">
+      <!--  start add Departman -->
+    <div class="departmanAddDiv">
+      <form class="departmentForm" [formGroup]="departmentForm" [@slideInOut]="showAddDepartmentForm ? 'in' : 'out'">
+        <div class="form-group">
+          <label for="newDepartmentName">Yeni Departman Adı</label>
+          <input type="text" class="form-control" id="newDepartmentName" formControlName="newDepartmentName" required>
+        </div>
+        <button type="button" class="btn btn-success" (click)="addNewDepartment()"
+          [disabled]="departmentForm.invalid">Departman Ekle</button>
+      </form>
+      <button class=" btnShow" (click)="toggleAddDepartmentForm()"><span>Departman ekle</span> <mat-icon
+          aria-hidden="false" aria-label="Example home icon"
+          [fontIcon]="showAddDepartmentForm ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"></mat-icon>
+      </button>
+    </div>
+     <!--  end add Departman -->
+
+
     <form [formGroup]="createEmployeeForm">
       <div class="form-group">
         <label for="departmentId">Departman ID</label>
         <select class="form-control" id="departmentId" formControlName="departmentId" required>
           <option value="">Seçiniz...</option>
           <option *ngFor="let department of departments" value="{{department.id}}">{{department.name}}</option>
+
         </select>
-        <div *ngIf="createEmployeeForm.get('departmentId').touched && createEmployeeForm.get('departmentId').invalid" id="error-departmentId" class="alert alert-danger ">
+        <div *ngIf="createEmployeeForm.get('departmentId').touched && createEmployeeForm.get('departmentId').invalid"
+          id="error-departmentId" class="alert alert-danger">
           Departman ID gereklidir.
         </div>
       </div>
       <div class="form-group">
         <label for="employeName">Çalışan Adı</label>
         <input type="text" class="form-control" id="employeName" formControlName="employeName" required>
-        <div *ngIf="createEmployeeForm.get('employeName').touched && createEmployeeForm.get('employeName').invalid" id="error-employeName" class="alert alert-danger ">
+        <div *ngIf="createEmployeeForm.get('employeName').touched && createEmployeeForm.get('employeName').invalid"
+          id="error-employeName" class="alert alert-danger">
           Çalışan adı gereklidir.
         </div>
       </div>
       <div class="form-group">
         <label for="employeSurname">Çalışan Soyadı</label>
         <input type="text" class="form-control" id="employeSurname" formControlName="employeSurname" required>
-        <div *ngIf="createEmployeeForm.get('employeSurname').touched && createEmployeeForm.get('employeSurname').invalid " id="error-employeSurname" class="alert alert-danger ">
+        <div
+          *ngIf="createEmployeeForm.get('employeSurname').touched && createEmployeeForm.get('employeSurname').invalid "
+          id="error-employeSurname" class="alert alert-danger">
           Çalışan soyadı gereklidir.
         </div>
       </div>
       <div class="form-group">
         <label for="employeTelNO">Telefon Numarası</label>
         <input type="text" class="form-control" id="employeTelNO" formControlName="employeTelNO" required>
-        <div *ngIf="createEmployeeForm.get('employeTelNO').touched && createEmployeeForm.get('employeTelNO').invalid" id="error-employeTelNO" class="alert alert-danger ">
+        <div *ngIf="createEmployeeForm.get('employeTelNO').touched && createEmployeeForm.get('employeTelNO').invalid"
+          id="error-employeTelNO" class="alert alert-danger">
           <ul>
             <li *ngIf="createEmployeeForm.get('employeTelNO').hasError('required')">Telefon numarası gereklidir.</li>
             <li *ngIf="createEmployeeForm.get('employeTelNO').hasError('pattern')">Telefon numarası geçersiz.</li>
@@ -42,6 +67,10 @@
         </div>
       </div>
     </form>
+
+    <!-- Yeni Departman Ekleme Formu -->
+
+
   </div>
   <div class="cmodalFooter">
     <button type="button" class="btn btn-secondary" (click)="close()">Kapat</button>

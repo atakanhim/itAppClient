@@ -7,7 +7,11 @@
     gap: 15px;
     align-items: center; 
     .createEmployee{
-        border:1px solid red;
+        border-bottom:1px solid gray;
+        border-radius: 4px;
+        padding: 10px;
+        margin-bottom: 20px;
+        text-align: right;
         width: 100%;
     }
     .listEmployee{

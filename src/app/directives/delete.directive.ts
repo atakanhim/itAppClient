@@ -42,7 +42,6 @@ export class DeleteDirective {
       componentType:DeleteDialogComponent,
       data:DeleteState.Yes,
       afterClosed:async () => {
-        this.toastrService.message("login basarili", "Basarili", { messageType: ToastrMessageType.Success, position: ToastrPosition.TopRight })
 
         const observable: Observable<any> = this.httpClientService.delete<any>({
           controller: this.controller,
