@@ -24,9 +24,7 @@ export class DeleteDirective {
     private dialogService:DialogService) {
     const img = _renderer.createElement("img");
     img.setAttribute("src", "/assets/delete.png");
-    img.setAttribute("cursor", "pointer");
     img.width = 25;
-    img.height = 25;
     _renderer.appendChild(element.nativeElement, img);
   }  
   

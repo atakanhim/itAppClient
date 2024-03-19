@@ -7,13 +7,13 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { EmployeVM } from 'src/app/contracts/employee/employe_vm';
 import { CommonModule, NgIf } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { Employe } from 'src/app/entities/employe';
 import { DeleteDirective } from 'src/app/directives/delete.directive';
 @Component({
   selector: 'app-list-employees',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, CommonModule, MatIconModule,DeleteDirective],
+  imports: [MatTableModule, MatPaginatorModule, CommonModule, MatIconModule,DeleteDirective,MatIconModule],
   templateUrl: './list-employees.component.html',
   styleUrl: './list-employees.component.scss'
 })
@@ -37,7 +37,10 @@ export class ListEmployeesComponent {
     });
 
   }
-
+  edit(element:any){
+    // edit işlemi yapılacak
+    console.log(element);
+  }
 
   async loadEmployees() {
     try {
