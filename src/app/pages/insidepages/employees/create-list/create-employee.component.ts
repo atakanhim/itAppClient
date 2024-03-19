@@ -3,7 +3,8 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, NgModelGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RouterLink } from '@angular/router';
-import { Create_Employe_Request, Create_Employe_Response } from 'src/app/contracts/employee/create_employee';
+import { Create_Employe_Request } from 'src/app/contracts/employee/requests';
+import { Create_Employe_Response } from 'src/app/contracts/employee/responses';
 import { List_User } from 'src/app/contracts/users/list_user';
 import { CreateEmployeeDialogComponent } from 'src/app/dialogs/create-employee-dialog/create-employee-dialog.component';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/services/admin/custom-toastr.service';
@@ -37,6 +38,7 @@ export class CreateEmployeeComponent {
   
     dialogRef.afterClosed().subscribe(result => {
       if(result as Create_Employe_Request){
+        
         this.createEmployee(result);
       }
     });
@@ -45,6 +47,7 @@ export class CreateEmployeeComponent {
   async createEmployee(request: Create_Employe_Request) {
     this.userAuthService.loggedInUser$.subscribe((x) => {
       request.appUserId= x.Id;
+      
     });    
     try{
       var result:Create_Employe_Response = await this.employeeService.create(request);

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClientService } from '../http-client.service';
 import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
-import { Create_Employe_Request, Create_Employe_Response } from 'src/app/contracts/employee/create_employee';
 import { List_Employe, Single_Employe } from 'src/app/contracts/employee/list_employee';
+import { Create_Employe_Response, Update_Employe_Response } from 'src/app/contracts/employee/responses';
+import { Create_Employe_Request, Update_Employe_Request } from 'src/app/contracts/employee/requests';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,15 @@ export class EmployeeService {
 
     return await firstValueFrom(observable) as Create_Employe_Response;
   }
+  async update(employe: Update_Employe_Request): Promise<Update_Employe_Response> {
+    const observable: Observable<Update_Employe_Request | Update_Employe_Response> = this.httpClientService.put<Update_Employe_Request | Update_Employe_Response>({
+      controller: "employee",
+      action: "update"
+    }, employe);
 
+
+    return await firstValueFrom(observable) as Update_Employe_Response;
+  }
   async get(employeeId: string): Promise<Single_Employe> {
     const observable: Observable<Single_Employe | string> = this.httpClientService.get<Single_Employe | string>({
       controller: "Employee",

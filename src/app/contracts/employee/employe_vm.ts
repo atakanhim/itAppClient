@@ -7,7 +7,7 @@ export interface EmployeVM {
     appUserId:string;
     employeName: string;
     employeSurname: string;
-    employeTelNO:string;
+    employeTelNo:string;
     usedLeaveDays:number;
     checkMarks:CheckMarkVM[];
     leaveRequests:LeaveRequest_VM[];

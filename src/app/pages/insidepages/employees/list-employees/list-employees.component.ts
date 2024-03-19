@@ -10,10 +10,15 @@ import { CommonModule, NgIf } from '@angular/common';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { Employe } from 'src/app/entities/employe';
 import { DeleteDirective } from 'src/app/directives/delete.directive';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdateEmployeeDialogComponent } from 'src/app/dialogs/update-employee-dialog/update-employee-dialog.component';
+import { Update_Employe_Response } from 'src/app/contracts/employee/responses';
+import { Update_Employe_Request } from 'src/app/contracts/employee/requests';
+import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/services/admin/custom-toastr.service';
 @Component({
   selector: 'app-list-employees',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, CommonModule, MatIconModule,DeleteDirective,MatIconModule],
+  imports: [MatTableModule, MatPaginatorModule, CommonModule, MatIconModule, DeleteDirective, MatIconModule],
   templateUrl: './list-employees.component.html',
   styleUrl: './list-employees.component.scss'
 })
@@ -22,7 +27,7 @@ export class ListEmployeesComponent {
   dataSource = new MatTableDataSource<EmployeVM>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   private _user: List_User;
-  constructor(private authUserService: UserAuthService, private employeeService: EmployeeService) {
+  constructor(private authUserService: UserAuthService, private employeeService: EmployeeService, private dialog: MatDialog, private toastrService: CustomToastrService) {
 
   }
   ngAfterViewInit() {
@@ -37,9 +42,27 @@ export class ListEmployeesComponent {
     });
 
   }
-  edit(element:any){
+  async edit(element: EmployeVM) {
     // edit işlemi yapılacak
-    console.log(element);
+    const dialogRef = this.dialog.open(UpdateEmployeeDialogComponent, {
+      width: '600px', // Modal penceresinin genişliği
+      data: element
+    });
+
+      await dialogRef.afterClosed().subscribe(async (result: Update_Employe_Request) => {
+      try {
+        if (result) 
+         {
+          var response = await this.employeeService.update(result);    
+          await this.loadEmployees();  
+          this.toastrService.message(response.message, "Güncelleme Başarılı", { messageType: ToastrMessageType.Success, position: ToastrPosition.TopRight })
+         }
+      }
+      catch (error) {
+        console.log(error);
+        this.toastrService.message(error.Message??"Employe update işlemi gerçekleştirilemedi", "Güncelleme Başarısız", { messageType: ToastrMessageType.Error, position: ToastrPosition.TopRight })
+      }
+    });
   }
 
   async loadEmployees() {
@@ -50,5 +73,5 @@ export class ListEmployeesComponent {
       console.error('Error loading employees:', error);
     }
   }
- 
+
 }

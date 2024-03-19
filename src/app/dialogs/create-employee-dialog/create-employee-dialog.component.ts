@@ -9,7 +9,6 @@ import {
 } from '@angular/forms';
 import { BaseDialog } from '../base/base-dialog';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Create_Employe_Request } from 'src/app/contracts/employee/create_employee';
 import { Department_VM } from 'src/app/contracts/department/department_vm';
 import { DepartmentService } from 'src/app/services/common/models/department.service';
 import { List_Department } from 'src/app/contracts/department/list_department';
@@ -24,6 +23,7 @@ import {
   Create_Department_Request,
   Create_Department_Response,
 } from 'src/app/contracts/department/department_request';
+import { Create_Employe_Request } from 'src/app/contracts/employee/requests';
 
 @Component({
   selector: 'app-create-employee-dialog',
@@ -71,9 +71,7 @@ export class CreateEmployeeDialogComponent extends BaseDialog<CreateEmployeeDial
   toggleAddDepartmentForm() {
     this.showAddDepartmentForm = !this.showAddDepartmentForm; // Form gösterimini tersine çevir
   }
-  sil(){
-    alert("sildim")
-  }
+  
   async getDepartments() {
     try {
       var data: List_Department =

@@ -1,0 +1,62 @@
+<div class="modal-content cmodal">
+    <div class="modal-header">
+      <h1 class="modal-title" style="text-align: center; width: 100%;">Personel Güncelle</h1>
+      <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close" (click)="dialogRef.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  
+    <div class="modal-body cbody">
+
+  
+      <form [formGroup]="updateEmployeeForm">
+        <div class="form-group">
+          <label for="departmentId">Departman ID</label>
+          <select class="form-control" id="departmentId" formControlName="departmentId"   required>
+            <option *ngFor="let department of departments" value="{{department.id}}"  >{{department.name}}</option>
+  
+          </select>
+          <div *ngIf="updateEmployeeForm.get('departmentId').touched && updateEmployeeForm.get('departmentId').invalid"
+            id="error-departmentId" class="alert alert-danger">
+            Departman ID gereklidir.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="employeName">Personel Adı</label>
+          <input type="text" class="form-control" id="employeName" formControlName="employeName"  required>
+          <div *ngIf="updateEmployeeForm.get('employeName').touched && updateEmployeeForm.get('employeName').invalid"
+            id="error-employeName" class="alert alert-danger">
+            Personel adı gereklidir.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="employeSurname">Personel Soyadı</label>
+          <input type="text" class="form-control" id="employeSurname" formControlName="employeSurname"  required>
+          <div
+            *ngIf="updateEmployeeForm.get('employeSurname').touched && updateEmployeeForm.get('employeSurname').invalid "
+            id="error-employeSurname" class="alert alert-danger">
+            Personel soyadı gereklidir.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="employeTelNO">Telefon Numarası</label>
+          <input type="text" class="form-control" id="employeTelNO" formControlName="employeTelNO"  required>
+          <div *ngIf="updateEmployeeForm.get('employeTelNO').touched && updateEmployeeForm.get('employeTelNO').invalid"
+            id="error-employeTelNO" class="alert alert-danger">
+            <ul>
+              <li *ngIf="updateEmployeeForm.get('employeTelNO').hasError('required')">Telefon numarası gereklidir.</li>
+              <li *ngIf="updateEmployeeForm.get('employeTelNO').hasError('pattern')">Telefon numarası geçersiz.</li>
+            </ul>
+          </div>
+        </div>
+      </form>
+  
+      <!-- Yeni Departman Ekleme Formu -->
+  
+  
+    </div>
+    <div class="cmodalFooter">
+      <button type="button" class="btn btn-secondary" (click)="close()">Kapat</button>
+      <button type="button" class="btn btn-primary" (click)="updateEmployee()">Güncelle</button>
+    </div>
+  </div>

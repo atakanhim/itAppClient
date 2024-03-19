@@ -1,6 +1,6 @@
 <div class="modal-content cmodal">
   <div class="modal-header">
-    <h5 class="modal-title">Çalışan Ekle</h5>
+    <h1 class="modal-title" style="text-align: center; width: 100%;">Personel Ekle</h1>
     <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close" (click)="dialogRef.close()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -39,20 +39,20 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="employeName">Çalışan Adı</label>
+        <label for="employeName">Personel Adı</label>
         <input type="text" class="form-control" id="employeName" formControlName="employeName" required>
         <div *ngIf="createEmployeeForm.get('employeName').touched && createEmployeeForm.get('employeName').invalid"
           id="error-employeName" class="alert alert-danger">
-          Çalışan adı gereklidir.
+          Personel adı gereklidir.
         </div>
       </div>
       <div class="form-group">
-        <label for="employeSurname">Çalışan Soyadı</label>
+        <label for="employeSurname">Personel Soyadı</label>
         <input type="text" class="form-control" id="employeSurname" formControlName="employeSurname" required>
         <div
           *ngIf="createEmployeeForm.get('employeSurname').touched && createEmployeeForm.get('employeSurname').invalid "
           id="error-employeSurname" class="alert alert-danger">
-          Çalışan soyadı gereklidir.
+          Personel soyadı gereklidir.
         </div>
       </div>
       <div class="form-group">
