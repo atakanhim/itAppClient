@@ -7,6 +7,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { UserAuthService } from 'src/app/services/common/models/user-auth.service';
+import { DepartmentService } from 'src/app/services/common/models/department.service';
 
 @Component({
   selector: 'app-layout', 
@@ -16,16 +17,17 @@ import { UserAuthService } from 'src/app/services/common/models/user-auth.servic
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
-  constructor(private router:Router, public authService:AuthService,private toastrService: CustomToastrService,public userAuthService:UserAuthService) {
+  constructor(private router:Router, public authService:AuthService,private toastrService: CustomToastrService,public userAuthService:UserAuthService,private departmenService:DepartmentService) {
 
   }
   logout(){
     localStorage.removeItem('accessToken');
 
     this.authService.identityCheck();
-    this.userAuthService.removeLoggedUser();
+
     this.router.navigate([""]);
     this.toastrService.message("Çıkış Başarılı","Basarili",{messageType:ToastrMessageType.Info,position:ToastrPosition.BottomRight})
-
+    this.userAuthService.removeLoggedUser();
+    this.departmenService.removeDepartments();
   }
 }

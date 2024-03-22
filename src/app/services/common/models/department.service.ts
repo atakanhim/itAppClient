@@ -47,7 +47,7 @@ export class DepartmentService {
   }
 
 
-  remodeDepartments() {
+  removeDepartments() {
     this.departmentsSubject.next(null);
   }
   pushDepartments(employees: any) {

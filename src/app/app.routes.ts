@@ -20,7 +20,7 @@ export const routes: Routes = [
       {path:"dashboard",loadComponent:()=>import('./pages/insidepages/dashboard/dashboard.component').then(m=>m.DashboardComponent)}, 
       {path:"stok",loadComponent:()=>import('./pages/insidepages/stoks/stoks.component').then(m=>m.StoksComponent)},
       {path:"employees",loadComponent:()=>import('./pages/insidepages/employees/employees.component').then(m=>m.EmployeesComponent)},
-
+      {path:"employees",loadComponent:()=>import('./pages/insidepages/checkmarks/checkmarks.component').then(m=>m.CheckmarksComponent)},
     ],canActivate:[AuthGuard],canActivateChild:[AuthGuardChield]
   },
   { path:"**",component:NotfoundComponent}

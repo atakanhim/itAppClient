@@ -69,6 +69,7 @@ export class ListEmployeesComponent {
     try {
       let listEmp: List_Employe = await this.employeeService.getAllEmployeeForUser(this._user.Id);
       this.dataSource.data = listEmp.employees;
+      console.log(listEmp);
     } catch (error) {
       console.error('Error loading employees:', error);
     }
