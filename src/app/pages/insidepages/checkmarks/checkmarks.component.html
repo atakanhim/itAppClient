@@ -1,1 +1,17 @@
-<p>checkmarks works!</p>
+<div class="checkmarkMain">
+    <div class="renderedListItem" *ngFor="let employee of _employees">
+        <div class="checkmarkLeftSide">
+            <p>{{ employee.employeName }}</p>
+        </div>
+        <div class="checkmarkRightSide">
+            <div *ngIf="employee.checkMarks" class="emptyCheckmark">
+                Checkmark boş 
+            </div>
+            <ng-container *ngFor="let checkmark of employee.checkMarks">
+                <span *ngIf="checkmark">
+                    {{ checkmark.date }} - 
+                </span>
+            </ng-container>
+        </div>
+    </div>
+</div>

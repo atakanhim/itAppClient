@@ -1,13 +1,11 @@
 table {
     width: 100%;
+
   }
  
   .actionss{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
     tr{
+      display: inline-block;
       height: 25px;
       margin-left: 5px;
       &:hover {
@@ -15,4 +13,18 @@ table {
         color: blue;
       }
     }
+  }
+  .mat-mdc-row .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+
+    cursor: pointer;
+  }
+  
+  .mat-mdc-row:hover .mat-mdc-cell {
+    background-color: rgba(232, 232, 232, 0.393);
+  }
+  
+  .demo-row-is-clicked {
+    font-weight: bold;
   }

@@ -19,8 +19,13 @@ export const routes: Routes = [
       {path:"",redirectTo:"dashboard",pathMatch:"full"}, 
       {path:"dashboard",loadComponent:()=>import('./pages/insidepages/dashboard/dashboard.component').then(m=>m.DashboardComponent)}, 
       {path:"stok",loadComponent:()=>import('./pages/insidepages/stoks/stoks.component').then(m=>m.StoksComponent)},
-      {path:"employees",loadComponent:()=>import('./pages/insidepages/employees/employees.component').then(m=>m.EmployeesComponent)},
-      {path:"employees",loadComponent:()=>import('./pages/insidepages/checkmarks/checkmarks.component').then(m=>m.CheckmarksComponent)},
+      {path:"employees",loadComponent:()=>import('./pages/insidepages/employees/employees.component').then(m=>m.EmployeesComponent),children:[
+        {path:"",loadComponent:()=>import('./pages/insidepages/employees/main-employees/main-employees.component').then(m=>m.MainEmployeesComponent)},
+        {path:"edit/:employeeId",loadComponent:()=>import('./pages/insidepages/employees/edit-employee/edit-employee.component').then(m=>m.EditEmployeeComponent)},
+       
+
+      ]},
+      {path:"checkmarks",loadComponent:()=>import('./pages/insidepages/checkmarks/checkmarks.component').then(m=>m.CheckmarksComponent)},
     ],canActivate:[AuthGuard],canActivateChild:[AuthGuardChield]
   },
   { path:"**",component:NotfoundComponent}

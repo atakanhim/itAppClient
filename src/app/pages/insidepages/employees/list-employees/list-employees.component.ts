@@ -15,6 +15,7 @@ import { UpdateEmployeeDialogComponent } from 'src/app/dialogs/update-employee-d
 import { Update_Employe_Response } from 'src/app/contracts/employee/responses';
 import { Update_Employe_Request } from 'src/app/contracts/employee/requests';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/services/admin/custom-toastr.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-list-employees',
   standalone: true,
@@ -27,20 +28,18 @@ export class ListEmployeesComponent {
   dataSource = new MatTableDataSource<EmployeVM>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   private _user: List_User;
-  constructor(private authUserService: UserAuthService, private employeeService: EmployeeService, private dialog: MatDialog, private toastrService: CustomToastrService) {
+  constructor(private router: Router,private authUserService: UserAuthService, private employeeService: EmployeeService, private dialog: MatDialog, private toastrService: CustomToastrService) {
 
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.paginator.pageSize = 20;
   }
-  ngOnInit() {
-
-    this.authUserService.loggedInUser$.subscribe((x) => {
+  async  ngOnInit() {
+    await this.authUserService.loggedInUser$.subscribe(async (x) => {
       this._user = x as List_User;
-      this.loadEmployees();
+      await this.loadEmployees();
     });
-
   }
   async edit(element: EmployeVM) {
     // edit işlemi yapılacak
@@ -69,10 +68,13 @@ export class ListEmployeesComponent {
     try {
       let listEmp: List_Employe = await this.employeeService.getAllEmployeeForUser(this._user.Id);
       this.dataSource.data = listEmp.employees;
-      console.log(listEmp);
     } catch (error) {
       console.error('Error loading employees:', error);
     }
   }
+  editEmployee(id: string) {
+    // Çift tıklama olayında çağrılacak fonksiyon
+    this.router.navigate(['admin/employees/edit', id]);
 
+  }
 }
