@@ -54,11 +54,11 @@ export class EmployeesComponent {
     else {
 
       const urlParts = url.split('/');
-      const edit = urlParts[urlParts.length - 2];
+      //const edit = urlParts[urlParts.length - 2];
       const employeeId = urlParts[urlParts.length - 1];
       const employee = await this.employeService.get(employeeId);
       const empName = employee.employee.employeName;
-      this.pageTitle = `/ ${edit.charAt(0).toUpperCase() + edit.slice(1)} / ${empName}`;
+      this.pageTitle = `/ ${empName.charAt(0).toUpperCase() + empName.slice(1)}`;
       this.cdr.detectChanges(); // Değişiklik algılaması yap
 
     }
