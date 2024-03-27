@@ -18,6 +18,7 @@ export const routes: Routes = [
     children:[
       {path:"",redirectTo:"dashboard",pathMatch:"full"}, 
       {path:"dashboard",loadComponent:()=>import('./pages/insidepages/dashboard/dashboard.component').then(m=>m.DashboardComponent)}, 
+      {path:"departments",loadComponent:()=>import('./pages/insidepages/departments/departments.component').then(m=>m.DepartmentsComponent)}, 
       {path:"stok",loadComponent:()=>import('./pages/insidepages/stoks/stoks.component').then(m=>m.StoksComponent)},
       {path:"employees",loadComponent:()=>import('./pages/insidepages/employees/employees.component').then(m=>m.EmployeesComponent),children:[
         {path:"",loadComponent:()=>import('./pages/insidepages/employees/main-employees/main-employees.component').then(m=>m.MainEmployeesComponent)},

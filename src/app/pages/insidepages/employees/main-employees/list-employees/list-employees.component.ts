@@ -24,7 +24,7 @@ import { Router } from '@angular/router';
   styleUrl: './list-employees.component.scss'
 })
 export class ListEmployeesComponent {
-  displayedColumns: string[] = ['employeName', 'employeSurname', 'employeTelNo', 'usedLeaveDays', 'department', "actions"];
+  displayedColumns: string[] = ['employeName', 'employeSurname', 'employeTelNo', 'usedLeaveDays', 'department', "puantaj","actions"];
   dataSource = new MatTableDataSource<EmployeVM>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   private _user: List_User;

@@ -29,6 +29,12 @@
         <th mat-header-cell *matHeaderCellDef> Departman </th>
         <td mat-cell *matCellDef="let element"> {{element.department.name}} </td>
       </ng-container>
+      <!-- Puantaj Column -->
+      <ng-container matColumnDef="puantaj">
+        <th mat-header-cell *matHeaderCellDef> Puantaj Tablosu </th>
+        <td mat-cell *matCellDef="let element">       <tr class="deletebtnTr" (click)="editEmployee(element.id)">  <mat-icon aria-label="list">list_alt</mat-icon>
+        </tr>  </td>
+      </ng-container>
   
       <ng-container matColumnDef="actions" >
         <th mat-header-cell *matHeaderCellDef> * </th>
@@ -40,7 +46,7 @@
             controller = "employee"></tr>
             <tr class="deletebtnTr" (click)="edit(element)">        <mat-icon aria-label="edit">mode_edit</mat-icon>
             </tr>
-          </td>      
+          </td>       
    
    
    

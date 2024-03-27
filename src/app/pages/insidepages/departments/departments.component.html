@@ -1,0 +1,32 @@
+<div class="departmentMain">
+
+          <!--  start add Departman -->
+          <div class="departmanAddDiv" style="width: 100%; padding: 50px;">
+            <form class="departmentForm" [formGroup]="departmentForm" [@slideInOut]="showAddDepartmentForm ? 'in' : 'out'">
+              <div class="form-group">
+                <label for="newDepartmentName">Yeni Departman Adı</label>
+                <input type="text" class="form-control" id="newDepartmentName" formControlName="newDepartmentName" required>
+              </div>
+              <button type="button" class="btn btn-success" (click)="addNewDepartment()"
+                [disabled]="departmentForm.invalid">Departman Ekle</button>
+            </form>    
+          </div>
+           <!--  end add Departman -->
+      
+        <div *ngFor="let departman of departments" class="departmentItem">
+            <div>
+                <p>{{departman.name}}</p>
+            </div>            
+            <div class="icons">
+                <mat-icon aria-label="edit" (click)="editDepartment()">mode_edit</mat-icon>
+                <div appDelete
+                (callback)="loadDepartments()"
+                [id]="departman.id"
+                controller = "department" ></div> 
+                </div>
+
+        </div>
+        <div class="departmentItem">
+            <div><button class="btn btn-primary" style="display: block; border: none;" (click)="toggleAddDepartmentForm()"> +  Add Department</button></div>
+        </div>
+</div>

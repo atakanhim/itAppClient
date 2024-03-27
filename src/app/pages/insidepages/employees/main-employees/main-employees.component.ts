@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { ListEmployeesComponent } from '../list-employees/list-employees.component';
-import { CreateEmployeeComponent } from '../create-list/create-employee.component';
+import { ListEmployeesComponent } from './list-employees/list-employees.component';
+import { CreateEmployeeComponent } from './create-list/create-employee.component';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeesComponent } from '../employees.component';
 

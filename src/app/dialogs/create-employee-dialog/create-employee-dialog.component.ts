@@ -35,7 +35,7 @@ import { Create_Employe_Request } from 'src/app/contracts/employee/requests';
 })
 export class CreateEmployeeDialogComponent extends BaseDialog<CreateEmployeeDialogComponent> {
   createEmployeeForm: FormGroup;
-  departmentForm: FormGroup;
+  departmentForm: FormGroup; 
   showList = false;
 
   departments: Department_VM[] = [];
@@ -43,7 +43,6 @@ export class CreateEmployeeDialogComponent extends BaseDialog<CreateEmployeeDial
   constructor(
     private departmentService: DepartmentService,
     private toastrService: CustomToastrService,
-    private changeDetector: ChangeDetectorRef,
 
     dialogRef: MatDialogRef<CreateEmployeeDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Create_Employe_Request,
@@ -52,10 +51,7 @@ export class CreateEmployeeDialogComponent extends BaseDialog<CreateEmployeeDial
   ) {
     super(dialogRef);
   }
-  toggleList() {
-    console.log(this.showList)
-    this.showList = !this.showList;
-  }
+
   ngOnInit() {
     this.getDepartments();
     this.departmentForm = this.fb2.group({
