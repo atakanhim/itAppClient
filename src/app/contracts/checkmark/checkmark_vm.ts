@@ -1,8 +1,16 @@
-export interface CheckMarkVM {
-    id:string;
-    employeeId:string;
-    date:Date;
-    workingHours:number;
-    overtimeHours: number;
-    isPresent: boolean;  
-  }
+import {  EmployeWithNothingVM } from "../employee/employe_vm";
+
+export interface Default_CheckMark_VM {
+  id:string;
+  employeeId:string;
+  date:Date;
+  workingHours:number;
+  overtimeHours: number;
+  isPresent: boolean;  
+}
+export interface CheckMarkVM extends  Default_CheckMark_VM{
+
+}
+export interface CheckMarkWithEmployeeVM {
+  employee:EmployeWithNothingVM;
+}

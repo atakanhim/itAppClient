@@ -8,9 +8,9 @@ import { BaseDialog } from '../base/base-dialog';
 import { Department_VM } from 'src/app/contracts/department/department_vm';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { EmployeVM } from 'src/app/contracts/employee/employe_vm';
 import { Update_Employe_Response } from 'src/app/contracts/employee/responses';
 import { Update_Employe_Request } from 'src/app/contracts/employee/requests';
+import { EmployeWithAllIncludesVM } from 'src/app/contracts/employee/employe_vm';
 
 declare  let $: any;
 @Component({
@@ -27,7 +27,7 @@ export class UpdateEmployeeDialogComponent extends BaseDialog<UpdateEmployeeDial
     private departmentService: DepartmentService,
     private toastrService: CustomToastrService,
     dialogRef: MatDialogRef<UpdateEmployeeDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: EmployeVM,
+    @Inject(MAT_DIALOG_DATA) public data: EmployeWithAllIncludesVM,
     private fb: FormBuilder,
   ) {
     super(dialogRef);

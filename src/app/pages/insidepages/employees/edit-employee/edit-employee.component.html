@@ -1,4 +1,5 @@
-<div>
-    <p>Çalışan ID'si: {{ employeeId }}</p>
-  </div>
+<div *ngIf="currentEmployee">
+  <p>Çalışan ID'si: {{currentEmployee.id}}</p>
+  <p>Çalışan Adı: {{currentEmployee.employeName}}</p>
+</div>
   
