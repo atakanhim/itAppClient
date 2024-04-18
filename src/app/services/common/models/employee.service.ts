@@ -37,7 +37,6 @@ export class EmployeeService {
       action: "GetEmployee",
       queryString:`EmployeeId=${employeeId}`
     });
-
     
    let singleEmployee = await firstValueFrom(observable) as Single_Employe;
    return singleEmployee;

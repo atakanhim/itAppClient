@@ -1,0 +1,110 @@
+.employeeDetailMain{
+    border: 1px solid red;
+    min-height: 100%;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .empcontainer{
+        border: 1px solid green;
+        padding: 15px;
+    }
+    .calendarMain{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+     
+      .calendarContainer{
+        border: 1px solid blue;
+        padding: 5px;
+        width: 450px;
+        min-height:450px; 
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+          .calendarDaysContainer{
+            border: 1px solid purple;  
+            display: flex;
+            align-items: center;
+            gap: 20px;     
+            div{
+              border: 1px solid red;
+              width: 45px;
+              height: 45px;
+              display: flex;
+              justify-content: center;
+              padding-top: 10px;
+            }
+          }
+          .calendarNumberContainer{
+            border: 1px solid black;
+            flex: 1;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            .templateTrue{
+              border: 1px solid red;
+              width: 45px;
+              height: 45px;
+              display: flex;
+              justify-content: center;
+              padding-top: 10px;
+              color: yellow;
+            }
+            .trueClass{
+              background-color: blue;
+            }
+            .falseClass{
+              background-color: red;
+            }
+            .templateFalse{
+              border: 3px solid orange;
+              flex: 1;
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              button{
+                width: 30%;
+                height: 40px;
+              
+          
+              }
+            }
+          }
+      }
+    }
+    
+    table {
+        width: 100%;
+    
+      }
+     
+      .actionss{
+        tr{
+          display: inline-block;
+          height: 25px;
+          margin-left: 5px;
+          &:hover {
+            cursor: pointer;
+            color: blue;
+          }
+        }
+      }
+      .mat-mdc-row .mat-mdc-cell {
+        border-bottom: 1px solid transparent;
+        border-top: 1px solid transparent;
+    
+        cursor: pointer;
+      }
+      
+      .mat-mdc-row:hover .mat-mdc-cell {
+        background-color: rgba(232, 232, 232, 0.393);
+      }
+      
+      .demo-row-is-clicked {
+        font-weight: bold;
+      }
+}

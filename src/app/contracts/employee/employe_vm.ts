@@ -13,3 +13,13 @@ export interface EmployeVM {
     leaveRequests:LeaveRequest_VM[];
     department:Department_VM
   }
+
+export interface EmployeVM_Epmty {
+    id:string;
+    appUserId:string;
+    employeName: string;
+    employeSurname: string;
+    employeTelNo:string;
+    usedLeaveDays:number;
+    department:Department_VM
+  }
