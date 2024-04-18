@@ -4,8 +4,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CheckMarkVM } from 'src/app/contracts/checkmark/checkmark_vm';
-import { EmployeVM } from 'src/app/contracts/employee/employe_vm';
-import { List_Employe } from 'src/app/contracts/employee/list_employee';
+import { EmployeWithAllIncludesVM } from 'src/app/contracts/employee/employe_vm';
+import { List_EmployeWithAllIncludes } from 'src/app/contracts/employee/list_employee';
 import { List_User } from 'src/app/contracts/users/list_user';
 import { DeleteDirective } from 'src/app/directives/delete.directive';
 import { CheckmarksService } from 'src/app/services/common/models/checkmarks.service';
@@ -21,7 +21,7 @@ import { UserAuthService } from 'src/app/services/common/models/user-auth.servic
 })
 export class CheckmarksComponent {
   private _user: List_User;
-  _employees:EmployeVM[];
+  _employees:EmployeWithAllIncludesVM[];
   constructor(private authUserService: UserAuthService,private employeeService:EmployeeService,private checkmarksService:CheckmarksService) {
     
   }
@@ -39,9 +39,8 @@ export class CheckmarksComponent {
 
   async loadEmployees() {
     try {
-      let listEmp: List_Employe = await this.employeeService.getAllEmployeeForUser(this._user.Id);
-      this._employees = listEmp.employees;
-      
+      let listEmp: List_EmployeWithAllIncludes = await this.employeeService.getAllEmployeeForUser(this._user.Id);
+      this._employees = listEmp.employees;   
       console.log(this._employees);
     } catch (error) {
       console.error('Error loading employees:', error);

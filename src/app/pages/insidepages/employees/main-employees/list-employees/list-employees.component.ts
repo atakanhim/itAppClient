@@ -1,11 +1,9 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { List_Employe } from 'src/app/contracts/employee/list_employee';
 import { List_User } from 'src/app/contracts/users/list_user';
 import { EmployeeService } from 'src/app/services/common/models/employee.service';
 import { UserAuthService } from 'src/app/services/common/models/user-auth.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { EmployeVM } from 'src/app/contracts/employee/employe_vm';
 import { CommonModule, NgIf } from '@angular/common';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { Employe } from 'src/app/entities/employe';
@@ -16,6 +14,8 @@ import { Update_Employe_Response } from 'src/app/contracts/employee/responses';
 import { Update_Employe_Request } from 'src/app/contracts/employee/requests';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/services/admin/custom-toastr.service';
 import { Router } from '@angular/router';
+import { EmployeWithAllIncludesVM } from 'src/app/contracts/employee/employe_vm';
+import { List_EmployeWithAllIncludes } from 'src/app/contracts/employee/list_employee';
 @Component({
   selector: 'app-list-employees',
   standalone: true,
@@ -25,7 +25,7 @@ import { Router } from '@angular/router';
 })
 export class ListEmployeesComponent {
   displayedColumns: string[] = ['employeName', 'employeSurname', 'employeTelNo', 'usedLeaveDays', 'department', "puantaj","actions"];
-  dataSource = new MatTableDataSource<EmployeVM>();
+  dataSource = new MatTableDataSource<EmployeWithAllIncludesVM>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   private _user: List_User;
   constructor(private router: Router,private authUserService: UserAuthService, private employeeService: EmployeeService, private dialog: MatDialog, private toastrService: CustomToastrService) {
@@ -41,7 +41,7 @@ export class ListEmployeesComponent {
       await this.loadEmployees();
     });
   }
-  async edit(element: EmployeVM) {
+  async edit(element: EmployeWithAllIncludesVM) {
     // edit işlemi yapılacak
     const dialogRef = this.dialog.open(UpdateEmployeeDialogComponent, {
       width: '600px', // Modal penceresinin genişliği
@@ -66,7 +66,7 @@ export class ListEmployeesComponent {
 
   async loadEmployees() {
     try {
-      let listEmp: List_Employe = await this.employeeService.getAllEmployeeForUser(this._user.Id);
+      let listEmp: List_EmployeWithAllIncludes = await this.employeeService.getAllEmployeeForUser(this._user.Id);
       this.dataSource.data = listEmp.employees;
     } catch (error) {
       console.error('Error loading employees:', error);

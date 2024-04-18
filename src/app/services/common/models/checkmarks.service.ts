@@ -4,6 +4,7 @@ import { List_CheckMarks_Employee } from 'src/app/contracts/checkmark/list_check
 import { firstValueFrom, Observable } from 'rxjs';
 import { Create_CheckMark_Request } from 'src/app/contracts/checkmark/requests';
 import { Create_CheckMark_Response } from 'src/app/contracts/checkmark/responses';
+import { List_CheckMark } from 'src/app/contracts/checkmark/list_checkmark';
 
 @Injectable({
   providedIn: 'root'
@@ -31,4 +32,6 @@ export class CheckmarksService {
    return list_CheckMarks_Employee;
 
   }
+
+  
 }

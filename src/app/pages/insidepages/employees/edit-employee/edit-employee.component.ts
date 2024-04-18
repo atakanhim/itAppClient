@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
+
+import { ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeService } from 'src/app/services/common/models/employee.service';
-import { Single_Employe } from 'src/app/contracts/employee/list_employee';
-import { EmployeVM } from 'src/app/contracts/employee/employe_vm';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
@@ -10,11 +10,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { DeleteDirective } from 'src/app/directives/delete.directive';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/services/admin/custom-toastr.service';
-import { CheckMarkVM, CheckMarkVM_wEmployee } from 'src/app/contracts/checkmark/checkmark_vm';
+import { CheckMarkVM, CheckMarkWithEmployeeVM } from 'src/app/contracts/checkmark/checkmark_vm';
 import { LongdatePipe } from "../../../../pipes/longdate.pipe";
 import { CheckmarksService } from 'src/app/services/common/models/checkmarks.service';
 import { List_CheckMarks_Employee } from 'src/app/contracts/checkmark/list_checkmarks';
-
+import {  EmployeWithNothingVM, EmployeeWithCheckMarkVM } from 'src/app/contracts/employee/employe_vm';
+import { List_CheckMark } from 'src/app/contracts/checkmark/list_checkmark';
+import {  NgIf } from '@angular/common';
 @Component({
     selector: 'app-edit-employee',
     standalone: true,
@@ -27,12 +29,18 @@ export class EditEmployeeComponent {
   currentMonth: number;
   empbilgi :any;
   days = ["Pt","Sl","Ça","Pe","Cu","Ct","Pa"];
-  checkmarks:CheckMarkVM_wEmployee[];
+  checkmarks:CheckMarkWithEmployeeVM[];
   empId : string;
-
   constructor(private route:ActivatedRoute,private checkmarkService:CheckmarksService,private toastrService:CustomToastrService,) {
     this.currentMonth = this.getCurrentMonth(this.currentDate);
-
+  }
+ async ngOnInit() {
+    await this.route.params.subscribe(async (params) => {
+      let employeeId = params['employeeId']; // URL'deki 'employeeId' parametresini alıyoruz
+      // let result = await this.employeeServicew.getEmployeeWithCheckMark(employeeId);
+      // this.currentEmployee=result.employee;
+      // this.cdr.detectChanges();
+    });
   }
   getCurrentMonth(date: Date): number {
     const monthNames = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
@@ -40,11 +48,7 @@ export class EditEmployeeComponent {
     return  date.getMonth()+1;
   }
 
- async ngOnInit() {
-    await this.route.params.subscribe(async (params) => {  
-      this.empId = params['employeeId']; // URL'deki 'employeeId' parametresini alıyoruz
-    });
-  }
+
   async ngAfterViewInit() {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
@@ -58,7 +62,7 @@ export class EditEmployeeComponent {
     let utcStartDate = new Date(startDate.getTime() - startDate.getTimezoneOffset() * 60000).toISOString();
     let utcEndDate = new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60000).toISOString();
       debugger;
-      let rsp = await this.checkmarkService.create({employeeId:this.empId,startDate:utcStartDate,endDate:utcEndDate});
+      // let rsp = await this.checkmarkService.create({employeeId:this.empId,startDate:utcStartDate,endDate:utcEndDate});
     }
     catch(e){
       console.log(e);
