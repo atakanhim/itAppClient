@@ -8,6 +8,7 @@ import { EmployeWithAllIncludesVM } from 'src/app/contracts/employee/employe_vm'
 import { List_EmployeWithAllIncludes } from 'src/app/contracts/employee/list_employee';
 import { List_User } from 'src/app/contracts/users/list_user';
 import { DeleteDirective } from 'src/app/directives/delete.directive';
+import { LongdatePipe } from 'src/app/pipes/longdate.pipe';
 import { CheckmarksService } from 'src/app/services/common/models/checkmarks.service';
 import { EmployeeService } from 'src/app/services/common/models/employee.service';
 import { UserAuthService } from 'src/app/services/common/models/user-auth.service';
@@ -15,13 +16,14 @@ import { UserAuthService } from 'src/app/services/common/models/user-auth.servic
 @Component({
   selector: 'app-checkmarks',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, CommonModule, MatIconModule, DeleteDirective, MatIconModule],
+  imports: [MatTableModule, MatPaginatorModule, CommonModule, MatIconModule, DeleteDirective, MatIconModule,LongdatePipe],
   templateUrl: './checkmarks.component.html',
   styleUrl: './checkmarks.component.scss'
 })
 export class CheckmarksComponent {
   private _user: List_User;
   _employees:EmployeWithAllIncludesVM[];
+
   constructor(private authUserService: UserAuthService,private employeeService:EmployeeService,private checkmarksService:CheckmarksService) {
     
   }

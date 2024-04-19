@@ -36,10 +36,7 @@ export class EditEmployeeComponent {
   }
  async ngOnInit() {
     await this.route.params.subscribe(async (params) => {
-      let employeeId = params['employeeId']; // URL'deki 'employeeId' parametresini alıyoruz
-      // let result = await this.employeeServicew.getEmployeeWithCheckMark(employeeId);
-      // this.currentEmployee=result.employee;
-      // this.cdr.detectChanges();
+       this.empId = params['employeeId'];
     });
   }
   getCurrentMonth(date: Date): number {
@@ -72,11 +69,14 @@ export class EditEmployeeComponent {
   try{
     let response:List_CheckMarks_Employee = await this.checkmarkService.getCheckmarksWithEmployeeId(this.empId,this.currentMonth);
     if (response.checkMarks.length>0){
+      console.log(response.checkMarks);
       this.checkmarks=response.checkMarks;
       this.empbilgi = {
         name: this.checkmarks[0].employee.employeName,
         surname: this.checkmarks[0].employee.employeSurname,
         telno: this.checkmarks[0].employee.employeTelNo,
+        departman: this.checkmarks[0].employee.department.name,
+        
       }
     }
     else{

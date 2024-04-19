@@ -4,12 +4,12 @@
             <p>{{ employee.employeName }}</p>
         </div>
         <div class="checkmarkRightSide">
-            <div *ngIf="employee.checkMarks" class="emptyCheckmark">
+            <div *ngIf="employee.checkMarks.length<1" class="emptyCheckmark">
                 Checkmark boş 
             </div>
             <ng-container *ngFor="let checkmark of employee.checkMarks">
                 <span *ngIf="checkmark">
-                    {{ checkmark.date }} - 
+                    {{ checkmark.date | longdate  }} - 
                 </span>
             </ng-container>
         </div>

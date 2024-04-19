@@ -10,6 +10,10 @@ export interface Base_EmployeVM {
   usedLeaveDays: number;
 }
 export interface EmployeWithNothingVM extends Base_EmployeVM {
+  
+}
+export interface EmployeWithDepartmanVM extends Base_EmployeVM {
+  department: Department_VM
 }
 export interface EmployeeWithCheckMarkVM extends Base_EmployeVM {
   checkMarks: CheckMarkVM[];
