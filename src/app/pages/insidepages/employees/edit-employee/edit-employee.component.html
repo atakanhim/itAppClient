@@ -15,15 +15,15 @@
 
     <div class="calendarContainer">
         <div class="calendarDaysContainer">
-          <div *ngFor="let day of days">
-            <p>{{ day }}</p>
-          </div>
+        <div *ngFor="let day of days; let i = index">
+            <p [ngClass]="'day' + dayOfWeek[i]">{{ day }}</p>
         </div>
-        <div class="calendarNumberContainer">
+        </div>
+        <div class="calendarNumberContainer" #checkmarkDiv >
           <ng-template *ngIf="checkmarks; then templateTrue else templateFalse" />
           <ng-template #templateTrue>
-            <div class="templateTrue" *ngFor="let checkmark of checkmarks" [ngClass]="{ 'trueClass': checkmark.isPresent, 'falseClass': !checkmark.isPresent, 'pClass': true }">
-              <p >{{ checkmark.isPresent?"1":"0" }}</p>
+              <div class="templateTrue" *ngFor="let checkmark of checkmarks; let i = index" [ngClass]="{ 'trueClass': checkmark.isPresent, 'falseClass': !checkmark.isPresent, 'pClass': true}">
+                <p class="otele" [attr.data-date]="checkmark.date">{{ checkmark.isPresent?"1":"0" }}</p>
             </div>
           </ng-template>
           <ng-template #templateFalse>
