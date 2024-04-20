@@ -23,7 +23,7 @@
           <ng-template *ngIf="checkmarks; then templateTrue else templateFalse" />
           <ng-template #templateTrue>
               <div class="templateTrue" *ngFor="let checkmark of checkmarks; let i = index" [ngClass]="{ 'trueClass': checkmark.isPresent, 'falseClass': !checkmark.isPresent, 'pClass': true}">
-                <p class="otele" [attr.data-date]="checkmark.date">{{ checkmark.isPresent?"1":"0" }}</p>
+                <p class="otele" [attr.data-date]="checkmark.date">{{ checkmark.date | date: 'd' }}</p>
             </div>
           </ng-template>
           <ng-template #templateFalse>

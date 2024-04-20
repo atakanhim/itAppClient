@@ -111,8 +111,7 @@ export class EditEmployeeComponent {
       // Tarihleri UTC'ye dönüştürme
     let utcStartDate = new Date(startDate.getTime() - startDate.getTimezoneOffset() * 60000).toISOString();
     let utcEndDate = new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60000).toISOString();
-      debugger;
-      // let rsp = await this.checkmarkService.create({employeeId:this.empId,startDate:utcStartDate,endDate:utcEndDate});
+     let rsp = await this.checkmarkService.create({employeeId:this.empId,startDate:utcStartDate,endDate:utcEndDate});
     }
     catch(e){
       console.log(e);
@@ -131,9 +130,7 @@ export class EditEmployeeComponent {
         telno: this.checkmarks[0].employee.employeTelNo,
         departman: this.checkmarks[0].employee.department.name, 
       }
-      // bu kısımda checkmarks[0] ilk elemanına bakarak otele class first item margin left vermek istiyorum 
-      // let element = $(this.elementRef.nativeElement).find(".templateFalse")
-      // console.log($(element));
+    
       
     }
     else{
