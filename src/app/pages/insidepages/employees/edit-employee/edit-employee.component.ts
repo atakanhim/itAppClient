@@ -14,42 +14,42 @@ import { CheckMarkVM, CheckMarkWithEmployeeVM } from 'src/app/contracts/checkmar
 import { LongdatePipe } from "../../../../pipes/longdate.pipe";
 import { CheckmarksService } from 'src/app/services/common/models/checkmarks.service';
 import { List_CheckMarks_Employee } from 'src/app/contracts/checkmark/list_checkmarks';
-import {  EmployeWithNothingVM, EmployeeWithCheckMarkVM } from 'src/app/contracts/employee/employe_vm';
+import { EmployeWithNothingVM, EmployeeWithCheckMarkVM } from 'src/app/contracts/employee/employe_vm';
 import { List_CheckMark } from 'src/app/contracts/checkmark/list_checkmark';
-import {  NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 declare var $: any; // jQuery'yi kullanabilmek için bu deklarasyonu ekleyin
 
 @Component({
-    selector: 'app-edit-employee',
-    standalone: true,
-    templateUrl: './edit-employee.component.html',
-    styleUrl: './edit-employee.component.scss',
-    imports: [MatTableModule, MatPaginatorModule, CommonModule, MatIconModule, DeleteDirective, LongdatePipe]
+  selector: 'app-edit-employee',
+  standalone: true,
+  templateUrl: './edit-employee.component.html',
+  styleUrl: './edit-employee.component.scss',
+  imports: [MatTableModule, MatPaginatorModule, CommonModule, MatIconModule, DeleteDirective, LongdatePipe]
 })
 
 export class EditEmployeeComponent {
   currentDate = new Date(); // Şu anki tarihi alır
   currentMonth: number;
-  empbilgi :any;
-  days = ["Pt","Sl","Ça","Pe","Cu","Ct","Pa"];
+  empbilgi: any;
+  days = ["Pt", "Sl", "Ça", "Pe", "Cu", "Ct", "Pa"];
   dayOfWeek: number[] = [0, 1, 2, 3, 4, 5, 6]; // Bu diziyi günlerin dizisine göre ayarlayın
   // checkmarks ve addCheckMark fonksiyonunuzu buraya ekleyin
-  checkmarks:CheckMarkWithEmployeeVM[];
-  empId : string;
+  checkmarks: CheckMarkWithEmployeeVM[];
+  empId: string;
   @ViewChild('checkmarkDiv', { read: ViewContainerRef }) checkmarkDiv: ViewContainerRef;
 
-  constructor(private route:ActivatedRoute,private checkmarkService:CheckmarksService,private toastrService:CustomToastrService,private elementRef:ElementRef,private renderer: Renderer2) {
+  constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef, private checkmarkService: CheckmarksService, private toastrService: CustomToastrService, private elementRef: ElementRef, private renderer: Renderer2) {
     this.currentMonth = this.getCurrentMonth(this.currentDate);
   }
- async ngOnInit() {
+  async ngOnInit() {
 
     await this.route.params.subscribe(async (params) => {
-       this.empId = params['employeeId'];
+      this.empId = params['employeeId'];
     });
 
   }
   getCurrentMonth(date: Date): number {
-    return  date.getMonth()+1;
+    return date.getMonth() + 1;
   }
   calculateOffset(index: number, startDay: any): number {
     const dayOffset = (index + startDay) % 7;
@@ -90,58 +90,50 @@ export class EditEmployeeComponent {
             marginFactor = 6;
             break;
         }
-        const marginLeftValue = marginFactor * 65; 
+        const marginLeftValue = marginFactor * 65;
         this.renderer.setStyle(childDiv, 'margin-left', `${marginLeftValue}px`); // margin-left ayarla
-      } 
-    } 
+      }
+    }
   }
   async ngAfterViewInit() {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
-
-    
     await this.loadCheckMarks();
-
-
   }
-  async addCheckMark(){
-    try{
+  async addCheckMark() {
+    try {
       let startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1); // Ayın ilk günü
       let endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 0); // Ayın son günü
       // Tarihleri UTC'ye dönüştürme
-    let utcStartDate = new Date(startDate.getTime() - startDate.getTimezoneOffset() * 60000).toISOString();
-    let utcEndDate = new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60000).toISOString();
-     let rsp = await this.checkmarkService.create({employeeId:this.empId,startDate:utcStartDate,endDate:utcEndDate});
+      let utcStartDate = new Date(startDate.getTime() - startDate.getTimezoneOffset() * 60000).toISOString();
+      let utcEndDate = new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60000).toISOString();
+      await this.checkmarkService.create({ employeeId: this.empId, startDate: utcStartDate, endDate: utcEndDate })
+      await this.loadCheckMarks();;
+
+
+
+
     }
-    catch(e){
+    catch (e) {
       console.log(e);
     }
   }
- async loadCheckMarks(){
-  try{
-    let response:List_CheckMarks_Employee = await this.checkmarkService.getCheckmarksWithEmployeeId(this.empId,this.currentMonth);
-    if (response.checkMarks.length>0){
-      console.log(response.checkMarks);
-      
-      this.checkmarks=response.checkMarks;
-      this.empbilgi = {
-        name: this.checkmarks[0].employee.employeName,
-        surname: this.checkmarks[0].employee.employeSurname,
-        telno: this.checkmarks[0].employee.employeTelNo,
-        departman: this.checkmarks[0].employee.department.name, 
+  async loadCheckMarks() {
+    try {
+      let response: List_CheckMarks_Employee = await this.checkmarkService.getCheckmarksWithEmployeeId(this.empId, this.currentMonth);
+      if (response.checkMarks.length > 0) {
+
+        this.checkmarks = response.checkMarks;
+        this.empbilgi = {
+          name: this.checkmarks[0].employee.employeName,
+          surname: this.checkmarks[0].employee.employeSurname,
+          telno: this.checkmarks[0].employee.employeTelNo,
+          departman: this.checkmarks[0].employee.department.name,
+        }
       }
-    
-      
     }
-    else{
-      // puantaj boş ise
+    catch (e) {
+      console.error('Error loading employees:', e);
     }
-  
+    this.cdr.detectChanges();
   }
-  catch(e){
-    console.error('Error loading employees:', e);
-  }
-  
- }
 
 }
