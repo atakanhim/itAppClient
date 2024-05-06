@@ -4,6 +4,6 @@ export interface Single_CheckMark{
     }
   export interface List_CheckMark{
     checkMarks:CheckMarkWithEmployeeVM[];
-
+    prevDays:any[];
     }
   

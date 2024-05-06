@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { EmployeeService } from 'src/app/services/common/models/employee.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { DeleteDirective } from 'src/app/directives/delete.directive';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,6 +17,8 @@ import { List_CheckMarks_Employee } from 'src/app/contracts/checkmark/list_check
 import { EmployeWithNothingVM, EmployeeWithCheckMarkVM } from 'src/app/contracts/employee/employe_vm';
 import { List_CheckMark } from 'src/app/contracts/checkmark/list_checkmark';
 import { NgIf } from '@angular/common';
+import { GetMonthNamePipe } from 'src/app/pipes/getmonthname.pipe';
+
 declare var $: any; // jQuery'yi kullanabilmek için bu deklarasyonu ekleyin
 
 @Component({
@@ -24,7 +26,7 @@ declare var $: any; // jQuery'yi kullanabilmek için bu deklarasyonu ekleyin
   standalone: true,
   templateUrl: './edit-employee.component.html',
   styleUrl: './edit-employee.component.scss',
-  imports: [MatTableModule, MatPaginatorModule, CommonModule, MatIconModule, DeleteDirective, LongdatePipe]
+  imports: [MatTableModule, MatPaginatorModule, CommonModule, MatIconModule, DeleteDirective, LongdatePipe, GetMonthNamePipe]
 })
 
 export class EditEmployeeComponent {
@@ -34,9 +36,10 @@ export class EditEmployeeComponent {
   days = ["Pt", "Sl", "Ça", "Pe", "Cu", "Ct", "Pa"];
   dayOfWeek: number[] = [0, 1, 2, 3, 4, 5, 6]; // Bu diziyi günlerin dizisine göre ayarlayın
   // checkmarks ve addCheckMark fonksiyonunuzu buraya ekleyin
-  checkmarks: CheckMarkWithEmployeeVM[];
+  responseListCheckmarks: List_CheckMarks_Employee;
   empId: string;
   @ViewChild('checkmarkDiv', { read: ViewContainerRef }) checkmarkDiv: ViewContainerRef;
+  previousDates: Date[] = [];
 
   constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef, private checkmarkService: CheckmarksService, private toastrService: CustomToastrService, private elementRef: ElementRef, private renderer: Renderer2) {
     this.currentMonth = this.getCurrentMonth(this.currentDate);
@@ -46,6 +49,7 @@ export class EditEmployeeComponent {
     await this.route.params.subscribe(async (params) => {
       this.empId = params['employeeId'];
     });
+    await this.loadCheckMarks();
 
   }
   getCurrentMonth(date: Date): number {
@@ -55,48 +59,33 @@ export class EditEmployeeComponent {
     const dayOffset = (index + startDay) % 7;
     return dayOffset === 0 ? 0 : dayOffset - 1; // Pazartesi başlangıç olduğu için 0'dan başlamasını sağlayın
   }
-  ngAfterViewChecked() {
-    // checkmarks varsa ve içeriği dolu ise
-    if (this.checkmarks && this.checkmarks.length > 0) {
-      // Template True çalıştığında
-      const childDiv = document.querySelector('.templateTrue');
-      let firstChild = childDiv.firstChild as Element; // Element olarak tip dönüşümü
-      if (childDiv && firstChild) {
-        // Template True çalıştığında
-        let dateStr = firstChild.getAttribute('data-date'); // data-date özelliğine erişme
-        let dateObj = new Date(dateStr); // Tarihi Date nesnesine dönüştür
-        let dayNumber = dateObj.getDay(); // Haftanın günü adını al
-        let marginFactor = 0; // Varsayılan değer
-        switch (dayNumber) {
-          case 1: // Pazartesi
-            marginFactor = 0;
-            break;
-          case 2: // Salı
-            marginFactor = 1;
-            break;
-          case 3: // Çarşamba
-            marginFactor = 2;
-            break;
-          case 4: // Perşembe
-            marginFactor = 3;
-            break;
-          case 5: // Cuma
-            marginFactor = 4;
-            break;
-          case 6: // Cumartesi
-            marginFactor = 5;
-            break;
-          case 0: // Pazar
-            marginFactor = 6;
-            break;
-        }
-        const marginLeftValue = marginFactor * 65;
-        this.renderer.setStyle(childDiv, 'margin-left', `${marginLeftValue}px`); // margin-left ayarla
-      }
+  createNewElement(div: Element, dates: Date[]) {
+
+    const tempElements = []; // Geçici dizi oluşturuluyor.
+
+    for (let i = 0; i < dates.length; i++) {
+      let newElement = document.createElement('p');
+      newElement.classList.add('dateStr');
+      newElement.setAttribute('data-date', dates[i].getDate().toString());
+      console.log(dates[i].getDate().toString());
+
+      // Set the text content with formatting
+      let datePipe = new DatePipe('en-US'); // Assuming you have DatePipe imported
+      let formattedDate = datePipe.transform(dates[i], 'd');
+      newElement.textContent = formattedDate;
+
+      tempElements.push(newElement); // Geçici diziye element ekleniyor.
     }
+
+    // Dizideki elemanları tersten div'e ekleyerek sıralı eklemeyi sağlıyoruz.
+    for (let j = tempElements.length - 1; j >= 0; j--) {
+      div.insertBefore(tempElements[j], div.firstChild);
+    }
+    console.log(tempElements);
+
   }
   async ngAfterViewInit() {
-    await this.loadCheckMarks();
+
   }
   async addCheckMark() {
     try {
@@ -119,16 +108,39 @@ export class EditEmployeeComponent {
   async loadCheckMarks() {
     try {
       let response: List_CheckMarks_Employee = await this.checkmarkService.getCheckmarksWithEmployeeId(this.empId, this.currentMonth);
-      if (response.checkMarks.length > 0) {
 
-        this.checkmarks = response.checkMarks;
+      if (response.checkMarks.length > 0) {
+        this.responseListCheckmarks = response;
         this.empbilgi = {
-          name: this.checkmarks[0].employee.employeName,
-          surname: this.checkmarks[0].employee.employeSurname,
-          telno: this.checkmarks[0].employee.employeTelNo,
-          departman: this.checkmarks[0].employee.department.name,
+          name: response.checkMarks[0].employee.employeName,
+          surname: response.checkMarks[0].employee.employeSurname,
+          telno: response.checkMarks[0].employee.employeTelNo,
+          departman: response.checkMarks[0].employee.department.name,
         }
+        // checkmarks varsa ve içeriği dolu ise
+        if (response.checkMarks && response.checkMarks.length > 0) {
+          let firstCheckmark = response.checkMarks[0];
+          if (firstCheckmark) {
+            let dateObj = new Date(firstCheckmark.date);
+            let dayNumber = dateObj.getDay();
+            this.responseListCheckmarks.prevDays = [];
+
+            // Gün numarası 3 ise (Çarşamba), Pazartesiye (1) kadar olan günleri al
+            if (dayNumber >= 1) {  // Bu kontrol Pazartesi ve sonrası için çalışır
+              for (let i = 1; i < dayNumber; i++) {
+                let newDate = new Date(dateObj);
+                newDate.setDate(newDate.getDate() - i);
+                this.responseListCheckmarks.prevDays.unshift(newDate);
+              }
+            }
+          }
+        }
+
+
+
       }
+      console.log(response);
+
     }
     catch (e) {
       console.error('Error loading employees:', e);

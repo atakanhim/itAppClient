@@ -9,7 +9,9 @@
   </div>
 
   <div class="calendarMain empcontainer">
+    <p>{{currentDate | getMonthName | uppercase}}</p>
     <p>
+
       Bugün {{currentDate | longdate}}
     </p>
 
@@ -20,11 +22,18 @@
         </div>
         </div>
         <div class="calendarNumberContainer" #checkmarkDiv >
-          <ng-template *ngIf="checkmarks; then templateTrue else templateFalse" />
+          <ng-template *ngIf="responseListCheckmarks?.checkMarks; then templateTrue else templateFalse" />
           <ng-template #templateTrue>
-              <div class="templateTrue" *ngFor="let checkmark of checkmarks; let i = index" [ngClass]="{ 'trueClass': checkmark.isPresent, 'falseClass': !checkmark.isPresent, 'pClass': true}">
-                <p class="otele" [attr.data-date]="checkmark.date">{{ checkmark.date | date: 'd' }}</p>
+                       
+            <ng-container *ngIf="responseListCheckmarks?.prevDays">
+              <div class="templateTrue" *ngFor="let prevday of responseListCheckmarks.prevDays; let i = index" [ngClass]="{ 'prevClass':true}">
+                <p class="dateStr" [attr.data-date]="prevday.date">{{ prevday | date: 'd' }}</p>
+                
             </div>
+            </ng-container> 
+            <div class="templateTrue" *ngFor="let checkmark of responseListCheckmarks.checkMarks; let i = index" [ngClass]="{ 'trueClass': checkmark.isPresent, 'falseClass': !checkmark.isPresent, 'pClass': true}">
+              <p class="dateStr" [attr.data-date]="checkmark.date">{{ checkmark.date | date: 'd' }}</p>
+          </div>
           </ng-template>
           <ng-template #templateFalse>
             <div class="templateFalse">
